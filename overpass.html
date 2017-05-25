@@ -1,0 +1,114 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"> 
+<head> 
+<title></title> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<link rel="stylesheet" href="leaflet.css" />
+<link rel="stylesheet" href="leaflet-geojson-selector.css" />
+<link rel="stylesheet" href="style.css" />
+<style type="text/css">
+	
+.leaflet-popup-content {
+	font-size: 14px;
+	white-space: pre;
+}
+
+.geojson-list-item {
+	white-space: nowrap;
+	font-size: 14px;
+}
+
+#geofilter {
+	margin: 0 20px;
+	font-size: 16px;
+	border: 2px solid #1978cf;
+	box-shadow: 0 0 8px #999;
+}
+#geofilter option {
+	padding: 4px;
+}
+
+</style>
+</head>
+
+<body>
+<h3><a href="../"><big>◄</big> Leaflet GeoJSON Selector</a></h3>
+
+<h4>Overpass API Example: load buildings in area</h4>
+
+<div id="map" style='width:800px;height:400px'></div>
+
+<select id="geofilter" size="3" multiple>
+	<option value="data=[out:json];way[highway=residential](9.1957,7.3983,9.0957,7.4641);(._;>;);out;">roads/streets</option>
+	<option value="data=[out:json];way[highway=primary_link](9.1957,7.3983,9.0957,7.4641);(._;>;);out;" selected>hotel</option>
+	<option value="data=[out:json];way[natural=water](9.0957,7.3983,9.0957,7.4641);(._;>;);out;" selected>lake</option>
+	<option value="data=[out:json];way[landuse=building](9.0957,7.3983,9.0957,7.4641);(._;>;);out;" selected>house</option>
+	<option value="data=[out:json];node[name=jahi](9.0957,7.3983,9.0957,7.4641);(._;>;);out;" selected>settlement</option>
+</select>
+
+<pre id="selection">&nbsp;</pre>
+
+<script src="jquery.min.js"></script>
+<script src="leaflet.js"></script>
+<script src="osmtogeojson.js"></script>
+<script src="leaflet-geojson-selector.js"></script>
+<script>
+
+	var map = new L.Map('map', {
+			center: L.latLng(9.0700,7.43500),
+			zoom: 13,
+			zoomControl: false,
+			layers: L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
+		});
+
+	map.addControl(L.control.zoom({position:'topright'}));
+
+	var geoLayer = L.geoJson().addTo(map);
+	
+	var geoList = L.control.geoJsonSelector(geoLayer, {
+		listItemBuild: function(layer) {
+			var props = layer.feature.properties,
+				tags = props.tags,
+				html = 'ID: '+props.id+'<br>';
+			
+			for(var p in tags)
+				html += p+': '+tags[p]+'<br>';
+
+			return html;
+		}
+	});
+
+	geoList.on('change', function(e) {
+		$('#selection').text( JSON.stringify(e.layers[0].feature.properties) );
+	})
+	.addTo(map);
+	
+	$('#geofilter').on('change', function(e) {
+
+		$.ajax({
+			data: this.value,
+			type: 'post',
+			dataType: 'json',
+			url: 'http://overpass-api.de/api/interpreter',
+			success: function(json) {
+
+				map.removeLayer(geoLayer);
+
+				var geojson = osmtogeojson(json);
+
+				geoLayer = L.geoJson(geojson).addTo(map);
+
+				map.fitBounds( geoLayer.getBounds() );
+
+				geoList.reload( geoLayer );
+			}
+		});
+	}).trigger('change');
+
+</script>
+
+<div id="copy"><a href="http://labs.easyblog.it/">Labs</a> &bull; <a rel="author" href="http://labs.easyblog.it/stefano-cudini/">Stefano Cudini</a></div>
+	
+</body>
+</html>
