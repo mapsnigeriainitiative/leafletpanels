@@ -2,8 +2,13 @@
 <!DOCTYPE html> 
 <html> 
 <head> 
-<title></title> 
+<title>mapsnigeriainitiative</title> 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+<meta name="description" content="Promoting quality GIS education and Training in Africa.">
+	<meta name="keywords" content="mapsnigeriainitiative, Geographic Information Systems, Nigeria, Initiative">
+	
+<link rel='shortcut icon' href='https://mapsnigeriainitiative.com/favicon.ico' type='image/icon'/>
 <link rel="stylesheet" href="leaflet.css" />
 <link rel="stylesheet" href="leaflet-geojson-selector.css" />
 <link rel="stylesheet" href="style.css" />
@@ -53,15 +58,17 @@ id="selection">
 <script src="leaflet-geojson-selector.js"></script>
 <script>
 
-	var map = new L.Map('map', {
-			zoomControl: false,
-			layers: L.tileLayer('http://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png')
-		});
+	maplink = 
+'<a href="http://openstreetmap.org">openstreetmap</a>,'+
+	'<a href="http://mapsnigeriainitiative.wordpress.com">mapsnigeriainitiative</a>';
 
-	map.addControl(L.control.zoom({position:'topright'}));
+var map = L.map('map');
 
-	var style = {fillColor:'#f45'}
+
+L.tileLayer('http://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png', 
+{attribution: maplink, maxzoom: 18}).addTo(map);
 	
+		
 	var geoLayer = L.geoJson().addTo(map);
 	
 	var geoList = L.control.geoJsonSelector(geoLayer);
