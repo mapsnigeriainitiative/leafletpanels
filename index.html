@@ -9,9 +9,9 @@
 	<meta name="keywords" content="mapsnigeriainitiative, Geographic Information Systems, Nigeria, Initiative">
 	
 <link rel='shortcut icon' href='https://mapsnigeriainitiative.com/favicon.ico' type='image/icon'/>
-<link rel="stylesheet" href="leaflet.css" />
-<link rel="stylesheet" href="leaflet-geojson-selector.css" />
-<link rel="stylesheet" href="style.css" />
+<link rel="stylesheet" href="https://rawgit.com/mapsnigeriainitiative/leafletpanels/master/leaflet.css" />
+<link rel="stylesheet" href="https://rawgit.com/mapsnigeriainitiative/leafletpanels/master/leaflet-geojson-selector.css" />
+<link rel="stylesheet" href="https://rawgit.com/mapsnigeriainitiative/leafletpanels/master/style.css" />
 
 <style type="text/css">
 	
@@ -45,22 +45,22 @@
 <div id="map" style='width:900px;height:500px;border:1px solid black'></div>
 
 <select id="geofile" size="3" multiple>
-	<option value="lagos.json" selected>Lagos</option>
-	<option value="ekiti.geojson">Ekiti</option>
+	<option value="https://rawgit.com/mapsnigeriainitiative/leafletpanels/master/lagos.json" selected>Lagos</option>
+	<option value="https://rawgit.com/mapsnigeriainitiative/leafletpanels/master/ekiti.geojson">Ekiti</option>
 </select>
 
 <pre 
 id="selection">
 &nbsp;</pre>
 
-<script src="jquery.min.js"></script>
-<script src="leaflet.js"></script>
-<script src="leaflet-geojson-selector.js"></script>
+<script src="https://rawgit.com/mapsnigeriainitiative/leafletpanels/master/jquery.min.js"></script>
+<script src="https://rawgit.com/mapsnigeriainitiative/leafletpanels/master/leaflet.js"></script>
+<script src="https://rawgit.com/mapsnigeriainitiative/leafletpanels/master/leaflet-geojson-selector.js"></script>
 <script>
 
 	maplink = 
 '<a href="http://openstreetmap.org">openstreetmap</a>,'+
-	'<a href="http://mapsnigeriainitiative.wordpress.com">mapsnigeriainitiative</a>';
+	'<a href="https://mapsnigeriainitiative.com">mapsnigeriainitiative</a>';
 
 var map = L.map('map');
 
